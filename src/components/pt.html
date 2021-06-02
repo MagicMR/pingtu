@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        canvas {
+            border: 1px solid;
+        }
+
+        .newcanvas {
+            width: 316px;
+            height: 316px;
+            margin: auto;
+        }
+
+        .newpohoto,
+        .download {
+            width: 300px;
+            height: 40px;
+            line-height: 40px;
+            margin: auto;
+            background-color: cornflowerblue;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px auto;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+<h3>使用canvas实现九宫格切图的效果</h3>
+<div class="mycanvas">
+    <canvas width="300" height="300" id="mycnavas"></canvas>
+</div>
+<div class="newpohoto">
+    开始切图
+</div>
+<div class="newcanvas">
+    <canvas width="100" height="100" id="img1"></canvas>
+    <canvas width="100" height="100" id="img2"></canvas>
+    <canvas width="100" height="100" id="img3"></canvas>
+    <canvas width="100" height="100" id="img4"></canvas>
+    <canvas width="100" height="100" id="img5"></canvas>
+    <canvas width="100" height="100" id="img6"></canvas>
+    <canvas width="100" height="100" id="img7"></canvas>
+    <canvas width="100" height="100" id="img8"></canvas>
+    <canvas width="100" height="100" id="img9"></canvas>
+</div>
+<div class="download">
+    下载图片
+</div>
+<script>
+    var canvas = document.getElementById("mycnavas");      //现将图片放上去
+    var cxt = mycnavas.getContext("2d");
+    var img = new Image();
+    img.src = "../assets/test.png";
+    window.onload = function() {
+        cxt.drawImage(img, 0, 0, 400, 300);             //画好图片的位置
+    }
+    var arr = [];        //将切的图片存到数组里面
+    document.getElementsByClassName("newpohoto")[0].onclick = function() {
+        var q = 1;
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 3; j++) {
+                var data = cxt.getImageData(j * 100, i * 100, 400, 100);      //类似于“复制”功能
+                var img = document.getElementById("img" + q)
+                var newcxt = img.getContext("2d");
+                newcxt.putImageData(data, 0, 0);    //类似“粘贴”功能
+                arr.push(console.log(img.toDataURL(q + ".png")))     //toDataURL()方法的两个参数：DataURL(type, encoderOptions) type指定转换为base64编码后图片的格式，如：image/png、image/jpeg、image/webp等等，默认为image/png格式；
+                q++;
+                console.log(arr)
+            }
+        }
+
+    }
+    //下载切的图片
+    var arr = [];
+    document.getElementsByClassName('download')[0].onclick = function() {
+        for (var i = 0; i < 9; i++) {
+            var a = document.createElement('a');
+            a.download = 'img' + (i + 1);
+            a.href = arr[i];
+            document.body.appendChild(a);
+            a.click();
+        }
+    }
+</script>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<template>
+    <v-container>
+        <v-card width="600px" height="600px">
+            <v-row no-gutters >
+                <v-col cols="4"
+                       class="py-0"
+                       v-for="(imgSrc,i) in imgList" :key="i">
+                    <img width="200px" height="200px" class="py-0 my-0" :src="imgSrc" @click="swapPosition($event)"/>
+                </v-col>
+            </v-row>
+        </v-card>
+        <v-btn @click="getImages">开始游戏</v-btn>
+    </v-container>
+</template>
+
+<script>
+    export default {
+        name: "pt",
+        data(){
+            return{
+                number:9,
+                imgList:'',
+                originalArray:[],
+                imgBlack:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAFKUlEQVR4Xu3VsRHDMAwEQbEd9t+f3YDl4NJf5Qiw4I3Ovffz+AgQ+ClwBOJlEHgXEIjXQeCPgEA8DwIC8QYINAF/kOZmakRAICOHtmYTEEhzMzUiIJCRQ1uzCQikuZkaERDIyKGt2QQE0txMjQgIZOTQ1mwCAmlupkYEBDJyaGs2AYE0N1MjAgIZObQ1m4BAmpupEQGBjBzamk1AIM3N1IiAQEYObc0mIJDmZmpEQCAjh7ZmExBIczM1IiCQkUNbswkIpLmZGhEQyMihrdkEBNLcTI0ICGTk0NZsAgJpbqZGBAQycmhrNgGBNDdTIwICGTm0NZuAQJqbqREBgYwc2ppNQCDNzdSIgEBGDm3NJiCQ5mZqREAgI4e2ZhMQSHMzNSIgkJFDW7MJCKS5mRoREMjIoa3ZBATS3EyNCAhk5NDWbAICaW6mRgQEMnJoazYBgTQ3UyMCAhk5tDWbgECam6kRAYGMHNqaTUAgzc3UiIBARg5tzSYgkOZmakRAICOHtmYTEEhzMzUiIJCRQ1uzCQikuZkaERDIyKGt2QQE0txMjQgIZOTQ1mwCAmlupkYEBDJyaGs2AYE0N1MjAgIZObQ1m4BAmpupEQGBjBzamk1AIM3N1IiAQEYObc0mIJDmZmpEQCAjh7ZmExBIczM1IiCQkUNbswkIpLmZGhEQyMihrdkEBNLcTI0ICGTk0NZsAgJpbqZGBAQycmhrNgGBNDdTIwICGTm0NZuAQJqbqREBgYwc2ppNQCDNzdSIgEBGDm3NJiCQ5mZqREAgI4e2ZhMQSHMzNSIgkJFDW7MJCKS5mRoREMjIoa3ZBATS3EyNCAhk5NDWbAICaW6mRgQEMnJoazYBgTQ3UyMCAhk5tDWbgECam6kRAYGMHNqaTUAgzc3UiIBARg5tzSYgkOZmakRAICOHtmYTEEhzMzUiIJCRQ1uzCQikuZkaERDIyKGt2QQE0txMjQgIZOTQ1mwCAmlupkYEBDJyaGs2AYE0N1MjAgIZObQ1m4BAmpupEQGBjBzamk1AIM3N1IiAQEYObc0mIJDmZmpEQCAjh7ZmExBIczM1IiCQkUNbswkIpLmZGhEQyMihrdkEBNLcTI0ICGTk0NZsAgJpbqZGBAQycmhrNgGBNDdTIwICGTm0NZuAQJqbqREBgYwc2ppNQCDNzdSIgEBGDm3NJiCQ5mZqREAgI4e2ZhMQSHMzNSIgkJFDW7MJCKS5mRoREMjIoa3ZBATS3EyNCAhk5NDWbAICaW6mRgQEMnJoazYBgTQ3UyMCAhk5tDWbgECam6kRAYGMHNqaTUAgzc3UiIBARg5tzSYgkOZmakRAICOHtmYTEEhzMzUiIJCRQ1uzCQikuZkaERDIyKGt2QQE0txMjQgIZOTQ1mwCAmlupkYEBDJyaGs2AYE0N1MjAgIZObQ1m4BAmpupEQGBjBzamk1AIM3N1IiAQEYObc0mIJDmZmpEQCAjh7ZmExBIczM1IiCQkUNbswkIpLmZGhEQyMihrdkEBNLcTI0ICGTk0NZsAgJpbqZGBAQycmhrNgGBNDdTIwICGTm0NZuAQJqbqREBgYwc2ppNQCDNzdSIgEBGDm3NJiCQ5mZqREAgI4e2ZhMQSHMzNSIgkJFDW7MJCKS5mRoREMjIoa3ZBATS3EyNCAhk5NDWbAICaW6mRgQEMnJoazYBgTQ3UyMCAhk5tDWbgECam6kRAYGMHNqaTUAgzc3UiIBARg5tzSYgkOZmakRAICOHtmYTEEhzMzUi8AU75yqADUt0bgAAAABJRU5ErkJggg=='
+            }
+        },
+        methods:{
+            getImages(){
+                let imgs= JSON.parse(localStorage.getItem("ptImages"))
+                this.originalArray= imgs
+                imgs[8]=this.imgBlack
+                imgs.sort(function() {
+                    return 0.5 - Math.random()
+                })
+                this.imgList= imgs
+            },
+            swapPosition(e){
+                // console.log(e)
+                console.log(e.tagret.src)
+                // console.log(typeof e.tagret.src)
+                let img64=e.tagret.src;
+                let number = this.imgList.indexOf(img64);
+                let currect = this.imgList.indexOf(this.imgBlack);
+                let aList = this.imgList
+                if (number-3>=0 && number-3===currect){
+                    let temp = aList[number]
+                    aList[number] = aList[currect]
+                    aList[currect] = temp
+                    return
+                }
+                if (number+3>=0 && number+3===currect){
+                    let temp = aList[number]
+                    aList[number] = aList[currect]
+                    aList[currect] = temp
+                    return
+                }
+                if (number-1>=0 && number-1===currect){
+                    let temp = aList[number]
+                    aList[number] = aList[currect]
+                    aList[currect] = temp
+                    return
+                }
+                if (number+1>=0 && number+1===currect){
+                    let temp = aList[number]
+                    aList[number] = aList[currect]
+                    aList[currect] = temp
+                    return
+                }
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

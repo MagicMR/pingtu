@@ -1,28 +1,68 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app id="body">
+    <v-app-bar
+      app
+      color="primary"
+    >
+
+      <v-spacer></v-spacer>
+
+    </v-app-bar>
+
+    <v-main>
+      <router-view  ></router-view>
+    </v-main>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <v-footer height="100px" fixed>
+    <v-btn
+            width="200px"
+            height="100%"
+            class="my-0"
+            @click="$router.push('/uploadImage')"
+    >
+      <h1>上传图片</h1>
+    </v-btn>
+      <v-btn
+              width="200px"
+              height="100%"
+              class="my-0"
+              @click="$router.push('/splitImage')"
+      >
+        <h1>分割</h1>
+      </v-btn>
+      <v-btn
+              width="200px"
+              height="100%"
+              class="my-0"
+              @click="$router.push('/pt')"
+      >
+        <h1>开始游戏</h1>
+      </v-btn>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
 
+  components: {
+
+  },
+
+  data: () => ({
+    //
+  }),
+};
+</script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  .body{
+    width: 1080px;
+    height:1920px
+  }
 </style>
